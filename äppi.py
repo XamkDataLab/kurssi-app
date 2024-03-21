@@ -32,23 +32,20 @@ if st.button('Hae Data'):
             publications_df = publication_table(publication_data)
             fields_of_study_df = fields_of_study_table(publication_data)
             unique_fields_of_study = fields_of_study_df['field_of_study'].unique().tolist()
-            st.dataframe(fields_of_study_df)
-            selected_field_of_study = st.selectbox('Select a Field of Study', ['All'] + unique_fields_of_study)
+            
+            selected_field_of_study = st.selectbox('Valitse tutkimuksen ala', ['All'] + unique_fields_of_study)
             
             if selected_field_of_study != 'All':
-                filtered_fields_of_study = fields_of_study_df[fields_of_study_df['field_of_study'] == selected_field_of_study]
-            
-                st.write(f"Filtered fields of study size: {filtered_fields_of_study.shape[0]}")
-                st.write(f"Publications DataFrame size: {publications_df.shape[0]}")
+                relevant_lens_ids = fields_of_study_df[fields_of_study_df['field_of_study'] == selected_field_of_study]['lens_id'].unique().tolist()
+                filtered_publications_df = publications_df[publications_df['lens_id'].isin(relevant_lens_ids)]
                 
-                filtered_publications_df = pd.merge(publications_df, filtered_fields_of_study, on='lens_id')
+                if filtered_publications_df.empty:
+                    st.write("Tälle ei löytynyt tutkimuksia :(.")
+                else:
+                    st.dataframe(filtered_publications_df)
             else:
-                filtered_publications_df = publications_df
-            
-            st.dataframe(filtered_publications_df)
+                st.dataframe(publications_df)
         else:
             st.write("No publication data fetched. Please check your inputs and try again.")
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
-
-
