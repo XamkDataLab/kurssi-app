@@ -43,12 +43,14 @@ if st.button('Hae Data'):
                 relevant_lens_ids = fields_of_study_df[fields_of_study_df['field_of_study'] == selected_field_of_study]['lens_id'].unique().tolist()
 
                 
-                st.write(f"Relevant lens_ids: {relevant_lens_ids}")
+                st.write(f"Selected Field of Study: {selected_field_of_study}")
+                st.write(f"Relevant lens_ids: {relevant_lens_ids[:5]} (showing up to 5)")
 
+                
                 filtered_publications_df = publications_df[publications_df['lens_id'].isin(relevant_lens_ids)]
 
                 if filtered_publications_df.empty:
-                    st.write("No publications found for the selected field of study.")
+                    st.write("No publications found for the selected field of study. This may indicate an issue with the data or the selection.")
                 else:
                     st.dataframe(filtered_publications_df)
             else:
