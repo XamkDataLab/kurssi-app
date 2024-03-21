@@ -14,7 +14,7 @@ if 'fields_of_study_df' not in st.session_state:
 main_row = st.columns([2, 1, 2])
 
 with main_row[0]:
-    image_url = 'https://raw.githubusercontent.com/XamkDataLab/lens_demo/main/DALL-E.webp'
+    image_url = 'https://raw.githubusercontent.com/XamkDataLab/kurssi-app/main/DALL-E.webp'
     st.image(image_url)
 
 with main_row[1]:
