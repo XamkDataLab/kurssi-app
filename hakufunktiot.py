@@ -1,3 +1,7 @@
+import requests
+import time
+import json
+
 def get_publication_data(start_date, end_date, phrases, token):
     url = 'https://api.lens.org/scholarly/search'
     headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
