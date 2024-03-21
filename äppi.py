@@ -26,21 +26,29 @@ token = st.secrets["mytoken"]
 if st.button('Hae Data'):
     try:
         publication_data = get_publication_data(start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d"), [term.strip() for term in terms], token)
-        if publication_data and publication_data['data']:  
+        if publication_data and publication_data['data']:
             st.write(f"Löytyi {publication_data['total']} julkaisua")
-            
+
             publications_df = publication_table(publication_data)
             fields_of_study_df = fields_of_study_table(publication_data)
+
+            
+            st.write(f"Publications DataFrame size: {publications_df.shape}")
+            st.write(f"Fields of Study DataFrame size: {fields_of_study_df.shape}")
+
             unique_fields_of_study = fields_of_study_df['field_of_study'].unique().tolist()
-            
-            selected_field_of_study = st.selectbox('Valitse tutkimuksen ala', ['All'] + unique_fields_of_study)
-            
+            selected_field_of_study = st.selectbox('Select a Field of Study', ['All'] + unique_fields_of_study)
+
             if selected_field_of_study != 'All':
                 relevant_lens_ids = fields_of_study_df[fields_of_study_df['field_of_study'] == selected_field_of_study]['lens_id'].unique().tolist()
-                filtered_publications_df = publications_df[publications_df['lens_id'].isin(relevant_lens_ids)]
+
                 
+                st.write(f"Relevant lens_ids: {relevant_lens_ids}")
+
+                filtered_publications_df = publications_df[publications_df['lens_id'].isin(relevant_lens_ids)]
+
                 if filtered_publications_df.empty:
-                    st.write("Tälle ei löytynyt tutkimuksia :(.")
+                    st.write("No publications found for the selected field of study.")
                 else:
                     st.dataframe(filtered_publications_df)
             else:
@@ -49,3 +57,4 @@ if st.button('Hae Data'):
             st.write("No publication data fetched. Please check your inputs and try again.")
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
+
