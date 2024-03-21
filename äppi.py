@@ -29,7 +29,7 @@ if st.button('Hae Data'):
         if publication_data and publication_data['data']:  
             st.write(f"Löytyi {publication_data['total']} julkaisua")
             
-            publications_df = publications_table(publication_data)
+            publications_df = publication_table(publication_data)
             
             fields_of_study_df = fields_of_study_table(publication_data) 
             unique_fields_of_study = fields_of_study_df['field_of_study'].unique().tolist()
