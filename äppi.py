@@ -14,7 +14,7 @@ if 'fields_of_study_df' not in st.session_state:
 main_row = st.columns([2, 1, 2])
 
 with main_row[0]:
-    image_url = 'https://raw.githubusercontent.com/XamkDataLab/lens_demo/main/DALL.jpg'
+    image_url = 'https://raw.githubusercontent.com/XamkDataLab/lens_demo/main/DALL-E.webp'
     st.image(image_url)
 
 with main_row[1]:
@@ -35,14 +35,17 @@ if st.button('Hae Data'):
         st.session_state.publications_df = publication_table(publication_data)
         st.session_state.fields_of_study_df = fields_of_study_table(publication_data)
 
+display_full_df = True
+
 if not st.session_state.fields_of_study_df.empty:
     unique_fields_of_study = st.session_state.fields_of_study_df['field_of_study'].unique().tolist()
     selected_field_of_study = st.selectbox('Select a Field of Study', ['All'] + unique_fields_of_study, key="field_of_study_select")
 
-    st.write("Full Publications DataFrame:")
-    st.dataframe(st.session_state.publications_df)
-    
-    if selected_field_of_study != 'All':
+    if selected_field_of_study == 'All':
+        st.write("Full Publications DataFrame:")
+        st.dataframe(st.session_state.publications_df)
+    else:
+        display_full_df = False
         relevant_lens_ids = st.session_state.fields_of_study_df[st.session_state.fields_of_study_df['field_of_study'] == selected_field_of_study]['lens_id'].tolist()
         
         if relevant_lens_ids:
