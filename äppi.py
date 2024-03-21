@@ -6,7 +6,6 @@ from datanmuokkausfunktiot import *
 st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center;'>Datahaku julkaisuista</h1>", unsafe_allow_html=True)
 
-# UI elements for input
 image_url = 'https://raw.githubusercontent.com/XamkDataLab/lens_demo/main/DALL.jpg'
 st.image(image_url)
 
@@ -22,30 +21,25 @@ if st.button('Hae Data'):
         publications_df = publication_table(publication_data)
         fields_of_study_df = fields_of_study_table(publication_data)
 
-        st.write("DataFrames loaded successfully.")
+        st.write(f"Found {publication_data['total']} publications")
+
         unique_fields_of_study = fields_of_study_df['field_of_study'].unique().tolist()
-        
         selected_field_of_study = st.selectbox('Select a Field of Study', ['All'] + unique_fields_of_study)
 
         if selected_field_of_study != 'All':
-        
-            relevant_lens_ids = fields_of_study_df[fields_of_study_df['field_of_study'] == selected_field_of_study]['lens_id'].tolist()
-            
-            
-            st.write(f"Relevant lens_ids for selected field: {relevant_lens_ids}")
-            
-            
+            relevant_lens_ids = fields_of_study_df[fields_of_study_df['field_of_study'] == selected_field_of_study]['lens_id']
+            st.write(f"Debug: Relevant lens_ids {relevant_lens_ids.tolist()}")
+
             filtered_publications_df = publications_df[publications_df['lens_id'].isin(relevant_lens_ids)]
 
-            
             if not filtered_publications_df.empty:
                 st.dataframe(filtered_publications_df)
             else:
-                st.write("No publications found for the selected field of study.")
+                st.error("No publications found for the selected field of study.")  
         else:
-            
             st.dataframe(publications_df)
     else:
-        st.write("No publication data fetched. Please check your inputs and try again.")
+        st.error("No publication data fetched. Please check your inputs and try again.")
+
 
 
