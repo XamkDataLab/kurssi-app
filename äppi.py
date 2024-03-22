@@ -7,8 +7,8 @@ import time
 st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center;'>Datahaku julkaisuista</h1>", unsafe_allow_html=True)
 st.write('')
-st.write('Tällä työkalulla voit hakea ajankohtaisia julkaisuja usasta eri tietokannasta yhtäaikaa. Paina kuvan alla olevaa "Hae data" -nappia käynnistääksesi haun.')
-st.write('Voit suodattaa tuloksia tutkimuksen aihe-alueen (field of study mukaan')
+st.write('Tällä työkalulla voit hakea ajankohtaisia julkaisuja usasta eri tietokannasta yli neljännesmiljardin julkaisun joukosta. Paina kuvan alla olevaa "Hae data" -nappia käynnistääksesi haun.')
+st.write('Voit suodattaa tuloksia tutkimuksen aihe-alueen (field of study) mukaan. Käytä maksimissaan kahden kuukauden aikarajausta')
 
 if 'publications_df' not in st.session_state:
     st.session_state.publications_df = pd.DataFrame()
