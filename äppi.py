@@ -2,9 +2,13 @@ import streamlit as st
 import pandas as pd
 from hakufunktiot import *
 from datanmuokkausfunktiot import *
+import time
 
 st.set_page_config(layout="wide")
 st.markdown("<h1 style='text-align: center;'>Datahaku julkaisuista</h1>", unsafe_allow_html=True)
+st.write('')
+st.write('Tällä työkalulla voit hakea ajankohtaisia julkaisuja usasta eri tietokannasta yhtäaikaa. Paina kuvan alla olevaa "Hae data" -nappia käynnistääksesi haun.')
+st.write('Voit suodattaa tuloksia tutkimuksen aihe-alueen (field of study mukaan')
 
 if 'publications_df' not in st.session_state:
     st.session_state.publications_df = pd.DataFrame()
@@ -14,7 +18,7 @@ if 'fields_of_study_df' not in st.session_state:
 main_row = st.columns([2, 1, 2])
 
 with main_row[0]:
-    image_url = 'https://raw.githubusercontent.com/XamkDataLab/kurssi-app/main/DALL-E.webp'
+    image_url = 'https://raw.githubusercontent.com/XamkDataLab/kurssi-app/main/DALL-E.jpg'
     st.image(image_url)
 
 with main_row[1]:
@@ -36,6 +40,7 @@ if st.button('Hae Data'):
         st.session_state.fields_of_study_df = fields_of_study_table(publication_data)
 
 display_full_df = True
+columns_to_display = ['year_published', 'title', 'publication_type', 'source_publisher', 'source_title', 'link']
 
 if not st.session_state.fields_of_study_df.empty:
     unique_fields_of_study = st.session_state.fields_of_study_df['field_of_study'].unique().tolist()
@@ -43,7 +48,7 @@ if not st.session_state.fields_of_study_df.empty:
 
     if selected_field_of_study == 'All':
         st.write("Full Publications DataFrame:")
-        st.dataframe(st.session_state.publications_df)
+        st.dataframe(st.session_state.publications_df[columns_to_display])
     else:
         display_full_df = False
         relevant_lens_ids = st.session_state.fields_of_study_df[st.session_state.fields_of_study_df['field_of_study'] == selected_field_of_study]['lens_id'].tolist()
@@ -53,7 +58,7 @@ if not st.session_state.fields_of_study_df.empty:
             
             if not filtered_publications_df.empty:
                 st.write(f"Filtered Publications for {selected_field_of_study}:")
-                st.dataframe(filtered_publications_df)
+                st.dataframe(filtered_publications_df[columns_to_display])
             else:
                 st.write("No publications found for the selected field of study.")
         else:
