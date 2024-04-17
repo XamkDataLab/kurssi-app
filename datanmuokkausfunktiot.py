@@ -23,7 +23,7 @@ def publication_table(json_data):
     columns = ["lens_id", "title", "publication_type", "year_published", 
                "date_published_parts", "created", 
                "references_count", "start_page", "end_page", "author_count", 
-               "abstract", "source", "source_urls", "external_ids"]  
+               "abstract", "source", "source_urls", "external_ids", "is_open_access"]  
 
     data = [{key: item[key] if key in item else None for key in columns} for item in data_list]
 
