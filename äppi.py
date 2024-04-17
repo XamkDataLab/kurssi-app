@@ -40,7 +40,7 @@ if st.button('Hae Data'):
         st.session_state.fields_of_study_df = fields_of_study_table(publication_data)
 
 display_full_df = True
-columns_to_display = ['year_published', 'title', 'publication_type', 'source_publisher', 'source_title', 'link']
+columns_to_display = ['year_published', 'is_open_access', 'title', 'link', 'publication_type', 'source_publisher', 'source_title']
 
 if not st.session_state.fields_of_study_df.empty:
     unique_fields_of_study = st.session_state.fields_of_study_df['field_of_study'].unique().tolist()
